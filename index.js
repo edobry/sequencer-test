@@ -1,8 +1,19 @@
-
-/**
- * @name sequencer-test
+/*!
+ *
+ * welcome to wavepot
+ * ------------------
+ *
+ * this is a live editor. you create a function named `dsp`
+ * that accepts the parameter `t`, the coefficient of time,
+ * which you use to generate a single sample (range -1..1)
+ *
+ * below is the smallest example possible, a simple sine wave
+ * generator. check out more complex demos on the right ---->
+ *
+ * have fun!
+ *
  */
-
+ 
 var partialRight = function(f) {
     var slice = Array.prototype.slice;
     var args = slice.call(arguments, 1);
@@ -35,7 +46,7 @@ var applySteps = function(signal, steps) {
   return signal * (steps.length > 0
                      ?  steps.map(majorVal)
                              .reduce(function(a, b) { return a*b; })
-                     : 1);
+                     : 1)
 };
  
 var notes = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
@@ -73,6 +84,7 @@ var Sequencer = (function(length){
   var scheduled = exports.scheduled = new JaggedArray();
  
   var schedule = exports.schedule = function(start, end, item) {
+    scheduled.arr;
     for(var i = start; i <= end; i++)
       scheduled.push(i, item);
     return end - start;
@@ -80,25 +92,23 @@ var Sequencer = (function(length){
  
   var tick = exports.tick = function(time) {
     var step = Math.round(time) % length;
-    var out = scheduled.get(step).reduce(function(a,b) { return a + b; }, 0);
+    var out = scheduled.get(step);//.reduce(function(a,b) { return a + b; }, 0);
     //console.log(out);
-    return out;
+    return out.length > 0 ? out : [0];
   };
  
   return exports;
-})(2);
+})(8);
  
 var init = true;
-var amplitude = 0.6;
-var base = 2 * Math.PI / 500; 
- 
+var amplitude = 0.5;
+var base = 2 * Math.PI * 440;
+
+Sequencer.schedule(0, 1, playNote(base, 'a', scales.major));
+Sequencer.schedule(2, 3, playNote(base, 'b', scales.major));
+Sequencer.schedule(4, 5, playNote(base, 'c', scales.major));
+Sequencer.schedule(6, 7, playNote(base, 'd', scales.major));
  
 export function dsp(t) {
-  Sequencer.schedule(0, 2, playNote(base, 'a', scales.major));
-  //Sequencer.schedule(3, 6, playNote(base, 'd', scales.major));
-  //Sequencer.schedule(7, 10, playNote(base, 'c', scales.major));
- 
-  //console.log(Sequencer.tick(t));
- 
-  return amplitude * Math.sin(Sequencer.tick(t));
+  return amplitude * Math.sin(t * Sequencer.tick(t)[0]);
 }
