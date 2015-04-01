@@ -35,7 +35,7 @@ var applySteps = function(signal, steps) {
   return signal * (steps.length > 0
                      ?  steps.map(majorVal)
                              .reduce(function(a, b) { return a*b; })
-                     : 1)
+                     : 1);
 };
  
 var notes = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
@@ -89,16 +89,16 @@ var Sequencer = (function(length){
 })(2);
  
 var init = true;
+var amplitude = 0.6;
+var base = 2 * Math.PI / 500; 
+ 
  
 export function dsp(t) {
-  var amplitude = .6;
-  var base = 2 * Math.PI / 50 0;
- 
-  Sequencer.schedule(1, 2, playNote(base, 'a', scales.major));
+  Sequencer.schedule(0, 2, playNote(base, 'a', scales.major));
   //Sequencer.schedule(3, 6, playNote(base, 'd', scales.major));
   //Sequencer.schedule(7, 10, playNote(base, 'c', scales.major));
  
   //console.log(Sequencer.tick(t));
  
-  return amplitude * Math.sin(Sequencer.tick(t)*base);
+  return amplitude * Math.sin(Sequencer.tick(t));
 }
