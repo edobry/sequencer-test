@@ -1,17 +1,5 @@
-/*!
- *
- * welcome to wavepot
- * ------------------
- *
- * this is a live editor. you create a function named `dsp`
- * that accepts the parameter `t`, the coefficient of time,
- * which you use to generate a single sample (range -1..1)
- *
- * below is the smallest example possible, a simple sine wave
- * generator. check out more complex demos on the right ---->
- *
- * have fun!
- *
+/**
+ * @name sequencer-test
  */
  
 var partialRight = function(f) {
