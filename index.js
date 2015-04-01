@@ -34,7 +34,7 @@ var applySteps = function(signal, steps) {
   return signal * (steps.length > 0
                      ?  steps.map(majorVal)
                              .reduce(function(a, b) { return a*b; })
-                     : 1)
+                     : 1);
 };
  
 var notes = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
@@ -72,7 +72,6 @@ var Sequencer = (function(length){
   var scheduled = exports.scheduled = new JaggedArray();
  
   var schedule = exports.schedule = function(start, end, item) {
-    scheduled.arr;
     for(var i = start; i <= end; i++)
       scheduled.push(i, item);
     return end - start;
@@ -80,9 +79,8 @@ var Sequencer = (function(length){
  
   var tick = exports.tick = function(time) {
     var step = Math.round(time) % length;
-    var out = scheduled.get(step);//.reduce(function(a,b) { return a + b; }, 0);
-    //console.log(out);
-    return out.length > 0 ? out : [0];
+    var out = scheduled.get(step).reduce(function(a,b) { return a + b; }, 0);
+    return out;
   };
  
   return exports;
@@ -98,5 +96,5 @@ Sequencer.schedule(4, 5, playNote(base, 'c', scales.major));
 Sequencer.schedule(6, 7, playNote(base, 'd', scales.major));
  
 export function dsp(t) {
-  return amplitude * Math.sin(t * Sequencer.tick(t)[0]);
+  return amplitude * Math.sin(t * Sequencer.tick(t));
 }
