@@ -78,22 +78,38 @@ var Sequencer = (function(length){
   };
  
   var tick = exports.tick = function(time) {
-    var step = Math.round(time) % length;
+    var step =Math.round(time) % length;
     var out = scheduled.get(step).reduce(function(a,b) { return a + b; }, 0);
     return out;
   };
  
   return exports;
-})(8);
- 
+})(6);
+
 var init = true;
 var amplitude = 0.5;
 var base = 2 * Math.PI * 440;
 
+/*
+
+D+G, F+Bflat, G+C, 
+D+G, F+Bflat, Gsharp*+Csharp**, G+C 
+D+G, F+Bflat, G+C, 
+F+Bflat, D+G, 
+(chords) 
+*G sharp is also A flat, both are technically correct 
+** Same thing, C sharp = D flat 
+
+*/
+
 Sequencer.schedule(0, 1, playNote(base, 'a', scales.major));
+// Sequencer.schedule(0, 1, playNote(base, 'g', scales.major));
+
 Sequencer.schedule(2, 3, playNote(base, 'b', scales.major));
+// Sequencer.schedule(2, 3, playNote(base, 'b', scales.major));
+
 Sequencer.schedule(4, 5, playNote(base, 'c', scales.major));
-Sequencer.schedule(6, 7, playNote(base, 'd', scales.major));
+// Sequencer.schedule(4, 5, playNote(base, 'c', scales.major));
  
 export function dsp(t) {
   return amplitude * Math.sin(t * Sequencer.tick(t));
